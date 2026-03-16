@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+
+const sampleProducts = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i + 1,
+  name: `Product ${i + 1}`,
+  price: (Math.random() * 100).toFixed(2),
+  category: `Category ${((i % 10) + 1)}`,
+  image: "https://via.placeholder.com/200"
+}));
+
+export default function ProductCatalog() {
+  const [search, setSearch] = useState("");
+
+  const filtered = sampleProducts.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold mb-6">My Product Store</h1>
+
+      <input
+        type="text"
+        placeholder="Search products..."
+        className="mb-6 p-2 border rounded w-full max-w-md"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {filtered.map((product) => (
+          <div
+            key={product.id}
+            className="bg-white rounded-2xl shadow p-3 hover:shadow-lg"
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-32 object-cover rounded-xl mb-2"
+            />
+            <h2 className="font-semibold text-sm">{product.name}</h2>
+            <p className="text-xs text-gray-500">{product.category}</p>
+            <p className="text-sm font-bold mt-1">${product.price}</p>
+            <button className="mt-2 w-full bg-black text-white text-xs py-1 rounded-lg">
+              View
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
